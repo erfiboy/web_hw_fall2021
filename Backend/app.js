@@ -1,45 +1,19 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { ParseServer } from 'parse-server';
 import ParseDashboard from 'parse-dashboard';
 import { createServer } from 'http';
 import cors from 'cors';
-import cloudCode from './cloud/main.js';
+import api from './configserver.js'
+import SignUp from './cloud/routers/Signup.js'
+import Login from './cloud/routers/Login.js'
+import Cart from './cloud/routers/Cart.js'
 
 const app = express();
 dotenv.config(); // Loads environment variables from .env file
 
-const CongfigServer = () => {
-    const databaseUri = process.env.PARSE_SERVER_DATABASE_URI;
-
-    if (!databaseUri) {
-    console.log('DATABASE_URI not specified, falling back to localhost.');
-    }
-    const api = new ParseServer({
-        // allowOrigin: "*",
-        databaseURI: process.env.PARSE_SERVER_DATABASE_URI,
-
-        cloud: cloudCode,
-
-        appId: process.env.PARSE_APP_ID,
-        masterKey: process.env.PARSE_MASTER_KEY, // Keep this key secret!
-        fileKey: process.env.PARSE_FILE_KEY,
-        serverURL: process.env.PARSE_SERVER_URL, // Don't forget to change to https if needed
-        publicServerURL: process.env.PARSE_SERVER_URL,
-
-        appName: process.env.APP_NAME,
-        // Enable email verification
-        verifyUserEmails: false,
-        enableAnonymousUsers: false,
-        allowClientClassCreation: false,
-
-    });
-
-    app.use(process.env.SERVER_PATH, api);
-}
-
 const BookStoreDashboard = () => {
     var options = { allowInsecureHTTP: true };
+
     var dashboard = new ParseDashboard(
         {
             apps: [
@@ -60,7 +34,6 @@ const BookStoreDashboard = () => {
         options
     );
 
-
     app.use(process.env.DASHBOARD_PATH, dashboard);
 }
 
@@ -71,11 +44,15 @@ const listen = () => {
 
 const start = () => {
     app.use(cors()); 
-    CongfigServer();
+    app.use(process.env.SERVER_PATH, api);
     BookStoreDashboard();
 
     listen();
 }
+
+app.use('/signup', SignUp);
+app.use('/login', Login);
+app.use('/cart', Cart);
 
 app.get('/test', function (req, res) {
     res.send("salam");
