@@ -15,6 +15,11 @@ SignUp.get(
         
         try {
             await user.signUp();
+            var query = new Parse.Query(Parse.Role);
+            query.equalTo("name", 'Authenticated');
+            const role = await query.first({useMasterKey: true});
+            role.getUsers().add(user);
+            role.save(null, { useMasterKey: true });    
             res.send(JSON.stringify({"success" : user.getSessionToken()}))
         } catch (error) {
             res.send("error " + error)
