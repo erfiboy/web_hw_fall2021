@@ -5,10 +5,15 @@ import { createServer } from 'http';
 import bodyParser from 'body-parser'
 import cors from 'cors';
 import api from './configserver.js'
-import SignUp from './cloud/routers/Signup.js'
-import Login from './cloud/routers/Login.js'
-import Cart from './cloud/routers/Cart.js'
-import UpdateCart from './cloud/routers/UpdateCart.js'
+import SignUp from './cloud/routers/user/Signup.js'
+import Login from './cloud/routers/user/Login.js'
+import Cart from './cloud/routers/user/Cart.js'
+import UpdateCart from './cloud/routers/user/UpdateCart.js'
+import Status from './cloud/routers/products/status.js'
+import List from './cloud/routers/products/list.js'
+import CreateProduct from './cloud/routers/products/create.js'
+import CategoryList from './cloud/routers/category/list.js'
+import CategoryCreate from './cloud/routers/category/create.js'
 
 const app = express();
 dotenv.config(); // Loads environment variables from .env file
@@ -69,6 +74,14 @@ app.use('/signup', SignUp);
 app.use('/login', Login);
 app.use('/cart', Cart);
 app.use('/update-cart', UpdateCart);
+
+app.use('/status', Status);
+app.use('/list', List);
+app.use('/create', CreateProduct);
+
+app.use('/category/list', CategoryList);
+app.use('/category/create', CategoryCreate);
+
 
 app.get('/test', function (req, res) {
     res.send("salam");

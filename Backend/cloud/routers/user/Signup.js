@@ -1,6 +1,6 @@
 import express, { query } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import User from '../models/user.js'
+import User from '../../models/user.js'
 
 const SignUp = express.Router();
 SignUp.get(

@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import Cart from '../models/cart.js'
-import Book from '../models/book.js'
+import Cart from '../../models/cart.js'
+import Book from '../../models/book.js'
 
 const UpdateCart = express.Router();
 
@@ -16,6 +16,7 @@ UpdateCart.post(
             const cart = new Cart();
             cart.set("parent", user.id)
             body.result.forEach(element => {
+                //find books in the database
                 console.log(element)
                 const book = new Book();
                 book.set("id", element.id);
