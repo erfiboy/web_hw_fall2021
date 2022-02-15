@@ -50,7 +50,7 @@ CreateProduct.get(
             }
             else {
                 res.statusCode = 500
-                res.send({ "error": "book must set the availability status" })
+                res.send({ "error": "book must set the category" })
                 return
             }
 

@@ -8,7 +8,7 @@ List.get(
     expressAsyncHandler( async (req,res) => {
         try {
             const id = req.query.id
-            const query = new Parse.Query("Book");
+            const query = new Parse.Query("Product");
 
             if (req.query.catrgory_id)
                 query.equalTo("category", req.query.catrgory_id)
@@ -36,14 +36,15 @@ List.get(
             books.forEach(element =>{
                 response.push({
                     "id": element.id,
+                    "name": element.attributes.name,
                     "author": element.attributes.author,
+                    "price": element.attributes.price,
+                    "is_available" : element.attributes.is_available
                     // TODO book price and ...
-                    "price": 1200,
-                    "is_available" : true
                 })
             })
-
-            res.send(JSON.stringify(response))
+            const result = {"response" : response}
+            res.send(JSON.stringify(result))
 
         } catch (error) {
             res.send('error: ' + error)
